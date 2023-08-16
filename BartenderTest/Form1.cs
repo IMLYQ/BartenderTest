@@ -44,11 +44,8 @@ namespace BartenderTest
 
             //拼接数据
             sb.AppendLine(serialNumber + "," + origin);
-            //写入指定的文件中
-            using (StreamWriter stream = new StreamWriter(path + "\\$BarCodeTest003.txt"))
-            {
-                stream.Write(sb);
-            }
+
+            SaveToTxt(sb, path + "\\$BarCodeTest003.txt"); 
             string filePath = path + "\\BarCodeTest003";
             PrintMethod(filePath, "1");
         }
@@ -92,6 +89,30 @@ namespace BartenderTest
             for (int i = 0; i < pageCount; i++)
             {
                 p.Start();
+            }
+        }
+
+
+        /// <summary>
+        /// 保存txt文本
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private void SaveToTxt(StringBuilder sb, string filePath)
+        {
+            try
+            {
+                FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                //使用UTF8格式防止乱码
+                StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
+                streamWriter.Write(sb);
+                streamWriter.Flush();
+                streamWriter.Close();
+                fileStream.Close(); 
+            }
+            catch (Exception e)
+            {
             }
         }
         /// <summary>
